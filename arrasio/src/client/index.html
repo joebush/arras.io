@@ -132,14 +132,14 @@
                         <button id="startButton" tabindex="2">Play</button>
                     </div>
                 </div>
-                <div class="login">
-                    <h2>Login</h2>
+                <div class="login" style="float: left;">
+                    <h1>Login</h1>
                     <input id="playerEmail" type="email" name="email" value="" placeholder="Email">
                     <input id="playerPassword"  type="password" name="password" value="" placeholder="Password">
                     <button class="start-game" tabindex="2">Play</button>
                 </div>
                 <div class="signup">
-                    <h2>Signup</h2>
+                    <h1>Signup</h1>
                     <input id="signup-name" type="text" name="name" value="" placeholder="Name">
                     <input id="signup-email"  type="email" name="email" value="" placeholder="Email address">
                     <input id="signup-password" type="password" name="password" value="" placeholder="Password">
@@ -148,10 +148,20 @@
             </div>
         </div>
     </div>
+    <div id="message"></div>
+
     <!-- JS -->
     <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="js/app.js"></script>
     <script>
+    function displayMsg(msg, type){
+        $('#message').removeClass().addClass(type).text(msg).show();
+
+        setTimeout(function(){
+            $('#message').hide();
+        }, 2500);
+    }
+
     var clicked=true;
     $("#startMenuSlidingTrigger").on('click', function() {
         if(clicked) {
@@ -171,8 +181,13 @@
             email: $('#signup-email').val(),
             password: $('#signup-password').val()
         };
-        $.post('/signup', data, function(response){
-            console.debug(response);
+        $.post('/signup', data, function(){
+
+        }).done(function(){
+            displayMsg('Account created', 'success');
+            $('.signup input').val('');
+        }).fail(function(response){
+            displayMsg(response.responseJSON.msg, 'error');
         });
     });
     </script>

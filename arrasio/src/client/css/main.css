@@ -209,7 +209,7 @@ update {
     overflow: auto;
 }
 
-#startButton {
+#startButton, button {
     position: relative;
     margin: auto;
     width: 100%;
@@ -229,7 +229,7 @@ update {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
-#startButton:active, #startButton:hover {
+#startButton:active, button:active, #startButton:hover, button:hover {
     top: 1px;
     background: #8ABC3F;
     outline: none;
@@ -371,4 +371,31 @@ input [type="image"]:focus{
     float: right;
     display: block;
     overflow: hidden;
+}
+
+#message {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    font-weight: bold;
+    display: none;
+    display: block;
+    z-index: 1000;
+}
+
+#message.error {
+    background-color: #D83848;
+    color: white;
+}
+
+#message.success {
+    background-color: #8ABC3F;
+    color: #222;
 }

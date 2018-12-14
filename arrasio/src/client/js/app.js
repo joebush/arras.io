@@ -29,7 +29,7 @@ var config = {
         unresponsive: false,
         memory: 60,
     },
-    SOCKET_PORT: 3000
+    SOCKET_PORT: 80
 };
 var color = {};
 util.pullJSON('color').then(data => color = data);

@@ -5400,7 +5400,7 @@ var maintainloop = (() => {
         })();
         return census => {
 
-            if(bossesSpawned == 0){
+            if(bossesSpawned <= c.BOSSES){
             //if (timer > 6000 && ran.dice(16000 - timer)) {
                 util.log('[SPAWN] Preparing to spawn...');
                 timer = 0;
