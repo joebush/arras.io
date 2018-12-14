@@ -3347,12 +3347,16 @@ const sockets = (() => {
                             socket.kick('Ill-sized key request.');
                             return 1;
                         }
+                        util.log('[INFO] Authenticating user...');
+                        util.log(m);
 
                         let authData = m[0].split('::');
                         let playerEmail = authData[0];
                         let playerPassword = authData[1];
 
                         db.query("SELECT id, name, email FROM players WHERE email = ? AND password = ?",[playerEmail, playerPassword], function(error, results){
+
+                            console.log(results);
 
                             if(!results[0]){
                                 socket.verified = false;
@@ -3467,7 +3471,7 @@ const sockets = (() => {
                             // Start the update rhythm immediately
                             socket.update(0);
                             // Log it    
-                            util.log('[INFO] ' + (m[0]) + (needsRoom ? ' joined' : ' rejoined') + ' the game! Players: ' + players.length);
+                            util.log('[INFO] ' + name + (needsRoom ? ' joined' : ' rejoined') + ' the game! Players: ' + players.length);
                         }
                         break;
                     case 'S':
