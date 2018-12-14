@@ -12,11 +12,10 @@
   "runSpeed": 1.5,
   "maxHeartbeatInterval": 30000,
   "sqlinfo":{
-    "connectionLimit": 50,
-    "host": "DEFAULT",
-    "user": "root",
-    "password": "DEFAULT",
-    "database": "DEFAULT",
+    "host": "localhost",
+    "user": "vagrant",
+    "password": "vagrant",
+    "database": "arena",
     "debug": false
   },
   "verbose": true,

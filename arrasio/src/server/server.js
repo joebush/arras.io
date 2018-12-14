@@ -15,6 +15,7 @@ const c = require('../../config.json');
 const util = require('./lib/util');
 const ran = require('./lib/random');
 const hshg = require('./lib/hshg');
+const nodeUtil = require('util');
 
 // Let's get a cheaper array removal thing
 Array.prototype.remove = index => {
@@ -2836,8 +2837,11 @@ var logs = (() => {
     };
 })();
 
+const { decorateApp } = require('@awaitjs/express');
+
 // Essential server requires
 var express = require('express'),
+    mysql = require('mysql'),
     http = require('http'),
     url = require('url'),
     WebSocket = require('ws'),
@@ -3174,10 +3178,38 @@ var express = require('express'),
         };
     })();
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Connect mysql
+var db = mysql.createConnection(c.sqlinfo);
+db.connect();
+db.query = nodeUtil.promisify(db.query);
+
+app = decorateApp(app);
+
 // Give the client upon request
 exportDefintionsToClient(__dirname + '/../client/json/mockups.json');
 generateVersionControlHash(__dirname + '/../client/api/vhash');
 if (c.servesStatic) app.use(express.static(__dirname + '/../client'));
+
+// Create new account
+app.postAsync('/signup', async function(req, res){
+    let email = req.params.email;
+    let password = req.params.password;
+    let name = req.params.name;
+
+    console.log(req.body);
+
+    let results = await db.query("SELECT * FROM players");
+    console.log(results[0]['name']);
+
+    res.send('OK');
+});
+
+
 
 // Websocket behavior
 const sockets = (() => {

@@ -347,3 +347,28 @@ input [type="image"]:focus{
  outline: 1px solid transparent;
  border-style: none;
 }
+
+.logo {
+    display: block;
+    width: 500px;
+    margin: 0 auto;
+}
+
+.logo img {
+    width: 200px;
+    display: block;
+    margin: 0 auto;
+}
+
+.logo .headline {
+    display: block;
+    font-size: 100px;
+    color: red;
+}
+
+.signup {
+    width: 300px;
+    float: right;
+    display: block;
+    overflow: hidden;
+}

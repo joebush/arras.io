@@ -64,11 +64,13 @@
     <div id="mainWrapper">
         <div id="startMenuWrapper">
             <div id="startMenu">
+                <div class="logo">
+                    <img src="/images/foreup-logo.png">
+                    <h1 class="headline">ARENA</h1>
+                </div>
                 <div class="startMenuHolder">
                     <div class="sliderHolder">
                         <div class="slider" id="startMenuSlidingContent">
-                            <center><img src="/favicons/favicon-96x96.png" /></center>
-                            <h1>arras.io beta</h1>
                             <div id="serverName"><h4 class="nopadding">Connecting...</h4></div>
                             <input type="text" autofocus tabindex="1" spellcheck="false" placeholder="This is the tale of:" id="playerNameInput" maxlength="24" />
                             <input type="text" class="conceal" tabindex="3" placeholder="Token required." id="playerKeyInput" maxlength="64" />
@@ -130,6 +132,13 @@
                         <button id="startButton" tabindex="2">Play</button>
                     </div>
                 </div>
+                <div class="signup">
+                    <h2>Signup</h2>
+                    <input id="signup-name" type="email" name="name" value="" placeholder="Name">
+                    <input id="signup-email"  type="email" name="email" value="" placeholder="Email address">
+                    <input id="signup-password" type="email" name="password" value="" placeholder="Password">
+                    <button id="signup">Create Account</button>
+                </div>
             </div>
         </div>
     </div>
@@ -137,18 +146,29 @@
     <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="js/app.js"></script>
     <script>
-        var clicked=true;
-        $("#startMenuSlidingTrigger").on('click', function() {
-            if(clicked) {
-                clicked=false;
-                $(this).html('<h3 class="nopadding">close options/help 🡶</h3>');
-                $(".slider").css({"top": "-265px"})
-            } else {
-                clicked=true;
-                $(this).html('<h3 class="nopadding">view options/help 🡲</h3>');
-                $(".slider").css({"top": 0});
-            }
+    var clicked=true;
+    $("#startMenuSlidingTrigger").on('click', function() {
+        if(clicked) {
+            clicked=false;
+            $(this).html('<h3 class="nopadding">close options/help 🡶</h3>');
+            $(".slider").css({"top": "-265px"})
+        } else {
+            clicked=true;
+            $(this).html('<h3 class="nopadding">view options/help 🡲</h3>');
+            $(".slider").css({"top": 0});
+        }
+    });
+
+    $('#signup').on('click', function(){
+        var data = {
+            name: $('#signup-name').val(),
+            email: $('#signup-email').val(),
+            password: $('#signup-password').val()
+        };
+        $.post('/signup', data, function(response){
+            console.debug(response);
         });
+    });
     </script>
 </body>
 </html>
