@@ -9,12 +9,12 @@
   "networkFallbackTime": 150,
   "visibleListInterval": 1000,
   "gameSpeed": 1,
-  "runSpeed": 1.5,
+  "runSpeed": 1,
   "maxHeartbeatInterval": 30000,
   "sqlinfo":{
     "host": "localhost",
-    "user": "vagrant",
-    "password": "vagrant",
+    "user": "arenadb",
+    "password": "arenadb2018",
     "database": "arena",
     "debug": false
   },
@@ -32,7 +32,7 @@
   ],
   "X_GRID": 3,
   "Y_GRID": 3,
-  "DAMAGE_CONSTANT": 0.6,
+  "DAMAGE_CONSTANT": 2,
   "KNOCKBACK_CONSTANT": 1,
   "ROOM_BOUND_FORCE": 0.01,
   "FOOD": [
@@ -60,12 +60,12 @@
   "TIER_3": 45,
   "SKILL_CAP": 45,
   "SKILL_SOFT_CAP": 0,
-  "SKILL_CHEAT_CAP": 45,
+  "SKILL_CHEAT_CAP": 0,
   "SKILL_LEAK": 0,
   "STEALTH": 4,
   "MIN_SPEED": 0.001,
   "FOOD_AMOUNT": 2, 
   "SKILL_BOOST": 5,
   "BOTS": 0,
-  "GLASS_HEALTH_FACTOR": 2
+  "GLASS_HEALTH_FACTOR": 0.5
 }
