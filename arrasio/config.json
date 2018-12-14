@@ -23,17 +23,16 @@
 
   "WIDTH": 2000,
   "HEIGHT": 2000,
-  "MODE": "tdm",
+  "MODE": "ffa",
   "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/gi", 
   "ROOM_SETUP": [
-    [ "roid", "norm", "norm", "roid" ],
-    [ "norm", "nest", "roid", "norm" ],
-    [ "norm", "roid", "nest", "norm" ],
-    [ "roid", "norm", "norm", "roid" ]
+    ["norm", "norm", "norm"],
+    ["norm", "nest", "norm"],
+    ["norm", "norm", "norm"]
   ],
-  "X_GRID": 4,
-  "Y_GRID": 4,
+  "X_GRID": 3,
+  "Y_GRID": 3,
   "DAMAGE_CONSTANT": 0.6,
   "KNOCKBACK_CONSTANT": 1,
   "ROOM_BOUND_FORCE": 0.01,

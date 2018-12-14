@@ -5381,9 +5381,12 @@ var maintainloop = (() => {
             }).filter(e => {
                 return e;
             });
+
             // Spawning
-            spawnCrasher(census);
-            spawnBosses(census);
+            //spawnCrasher(census);
+            //spawnBosses(census);
+
+
             /*/ Bots
                 if (bots.length < c.BOTS) {
                     let o = new Entity(room.random());
