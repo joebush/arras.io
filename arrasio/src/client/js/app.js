@@ -29,6 +29,7 @@ var config = {
         unresponsive: false,
         memory: 60,
     },
+    SOCKET_PORT: 3000
 };
 var color = {};
 util.pullJSON('color').then(data => color = data);
@@ -1514,7 +1515,7 @@ function startGame() {
     document.getElementById('gameAreaWrapper').style.opacity = 1;
     // Set up the socket
     if (!global.socket) {
-        global.socket = socketInit(3000);
+        global.socket = socketInit(config.SOCKET_PORT);
     }
     if (!global.animLoopHandle) {
         animloop();
