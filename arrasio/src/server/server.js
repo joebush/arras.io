@@ -3311,7 +3311,7 @@ const sockets = (() => {
                     suspiciousIPs[n].warns++;
                     util.warn(reason + ' Kicking. ' + suspiciousIPs[n].warns + ' warnings.');
                     if (suspiciousIPs[n].warns >= c.socketWarningLimit) {
-                        ban(socket);
+                        //ban(socket);
                     }
                 }
                 socket.lastWords('K');
