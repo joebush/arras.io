@@ -636,6 +636,10 @@ window.onload = () => {
     }
     // Game start stuff
     document.getElementById('startButton').onclick = () => startGame();
+    $('.start-game').on('click', function(){
+        startGame();
+    });
+
     document.onkeydown = e => {
         var key = e.which || e.keyCode;
         if (key === global.KEY_ENTER && (global.dead || !global.gameStart)) {
@@ -1238,12 +1242,21 @@ const socketInit = (() => {
             if (!socket.open) return 1;
             socket.send(protocol.encode(message));
         };
+
         // Websocket functions for when stuff happens
         // This is for when the socket first opens
         socket.onopen = function socketOpen() {
             socket.open = true;
-            global.message = 'That token is invalid, expired, or already in use on this server. Please try another one!';
-            socket.talk('k', global.playerKey);
+
+
+            if(global.playerEmail){
+                socket.talk('a', global.playerEmail +'::'+global.playerPassword);
+                global.message = 'Invalid login, refresh page and try again';
+            }else{
+                socket.talk('k', global.playerKey);
+                global.message = 'That token is invalid, expired, or already in use on this server. Please try another one!';
+            }
+
             console.log('Token submitted to the server for validation.');
             // define a pinging function
             socket.ping = (payload) => {
@@ -1253,6 +1266,7 @@ const socketInit = (() => {
                 if (socket.cmd.check()) socket.cmd.talk();
             });
         };
+
         // Handle incoming messages
         socket.onmessage = function socketMessage(message) {
             // Make sure it looks legit.
@@ -1500,14 +1514,24 @@ function startGame() {
     util.submitToLocalStorage('optColors');
     let a = document.getElementById('optColors').value;
     color = color[(a === '') ? 'normal' : a];
+
     // Other more important stuff
     let playerNameInput = document.getElementById('playerNameInput');
     let playerKeyInput = document.getElementById('playerKeyInput');
+    let playerEmail = document.getElementById('playerEmail');
+    let playerPassword = document.getElementById('playerPassword');
+
     // Name and keys
     util.submitToLocalStorage('playerNameInput');
     util.submitToLocalStorage('playerKeyInput');
+    util.submitToLocalStorage('playerEmail');
+    util.submitToLocalStorage('playerPassword');
+
     global.playerName = player.name = playerNameInput.value;
     global.playerKey = playerKeyInput.value.replace(/(<([^>]+)>)/ig, '').substring(0, 64);
+    global.playerEmail = playerEmail.value;
+    global.playerPassword = playerPassword.value;
+
     // Change the screen
     global.screenWidth = window.innerWidth;
     global.screenHeight = window.innerHeight;

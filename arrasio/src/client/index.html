@@ -68,7 +68,7 @@
                     <img src="/images/foreup-logo.png">
                     <h1 class="headline">ARENA</h1>
                 </div>
-                <div class="startMenuHolder">
+                <div class="startMenuHolder" style="display: none">
                     <div class="sliderHolder">
                         <div class="slider" id="startMenuSlidingContent">
                             <div id="serverName"><h4 class="nopadding">Connecting...</h4></div>
@@ -132,11 +132,17 @@
                         <button id="startButton" tabindex="2">Play</button>
                     </div>
                 </div>
+                <div class="login">
+                    <h2>Login</h2>
+                    <input id="playerEmail" type="email" name="email" value="" placeholder="Email">
+                    <input id="playerPassword"  type="password" name="password" value="" placeholder="Password">
+                    <button class="start-game" tabindex="2">Play</button>
+                </div>
                 <div class="signup">
                     <h2>Signup</h2>
-                    <input id="signup-name" type="email" name="name" value="" placeholder="Name">
+                    <input id="signup-name" type="text" name="name" value="" placeholder="Name">
                     <input id="signup-email"  type="email" name="email" value="" placeholder="Email address">
-                    <input id="signup-password" type="email" name="password" value="" placeholder="Password">
+                    <input id="signup-password" type="password" name="password" value="" placeholder="Password">
                     <button id="signup">Create Account</button>
                 </div>
             </div>

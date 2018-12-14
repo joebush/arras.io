@@ -28,6 +28,8 @@ Array.prototype.remove = index => {
     }
 };
 
+var bossesSpawned = 0;
+
 // Define player keys
 var keys = [
     'k', 'l', 'testk', 'testl',
@@ -3197,16 +3199,29 @@ if (c.servesStatic) app.use(express.static(__dirname + '/../client'));
 
 // Create new account
 app.postAsync('/signup', async function(req, res){
-    let email = req.params.email;
-    let password = req.params.password;
-    let name = req.params.name;
 
-    console.log(req.body);
+    if(!req.body.email){
+        return res.status(400).send({msg: 'Email required'});
+    }
+    if(!req.body.password){
+        return res.status(400).send({msg: 'Password required'});
+    }
+    if(!req.body.name){
+        return res.status(400).send({msg: 'Name required'});
+    }
 
-    let results = await db.query("SELECT * FROM players");
-    console.log(results[0]['name']);
+    let playerFound = await db.query("SELECT * FROM players WHERE email = ?", [req.body.email]);
+    if(playerFound[0]){
+        return res.status(400).send({msg: 'Email already in use'});
+    }
 
-    res.send('OK');
+    let results = await db.query("INSERT INTO players SET ?", {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+    });
+
+    res.send({id: results.insertId});
 });
 
 
@@ -3258,6 +3273,7 @@ const sockets = (() => {
                             player.body.kill();
                         }, 10000);
                     }
+
                     // Disconnect everything
                     util.log('[INFO] User ' + player.name + ' disconnected!');
                     util.remove(players, index);
@@ -3314,12 +3330,44 @@ const sockets = (() => {
                     socket.kick('Malformed packet.');
                     return 1;
                 }
+
                 // Log the message request
                 socket.status.requests++;
+
                 // Remember who we are
                 let player = socket.player;
+
                 // Handle the request
                 switch (m.shift()) {
+
+                    // Account based verification
+                    case 'a':
+
+                        if (m.length !== 1) {
+                            socket.kick('Ill-sized key request.');
+                            return 1;
+                        }
+
+                        let authData = m[0].split('::');
+                        let playerEmail = authData[0];
+                        let playerPassword = authData[1];
+
+                        db.query("SELECT id FROM players WHERE email = ? AND password = ?",[playerEmail, playerPassword], function(error, results){
+
+                            if(!results[0]){
+                                socket.verified = false;
+                                socket.kick('Invalid login. Please refresh page and try again.');
+                                return false;
+                            }
+
+                            socket.verified = true;
+                            socket.talk('w', true);
+                            player._id = results[0]['id'];
+                            player.name = results[0]['name'];
+                        });
+
+                        break;
+
                     case 'k':
                         { // key verification
                             if (m.length !== 1) {
@@ -4640,8 +4688,10 @@ const sockets = (() => {
                         if (time - socket.statuslastHeartbeat > c.maxHeartbeatInterval) socket.kick('Lost heartbeat.');
                     });
                 }
+
                 // Start it
                 setInterval(slowloop, 1000);
+
                 // Give the broadcast method
                 return socket => {
                     // Make sure it's spawned first
@@ -5254,6 +5304,7 @@ var gameloop = (() => {
 })();
 // A less important loop. Runs at an actual 5Hz regardless of game speed.
 var maintainloop = (() => {
+
     // Place obstacles
     function placeRoids() {
         function placeRoid(type, entityClass) {
@@ -5348,9 +5399,12 @@ var maintainloop = (() => {
             };
         })();
         return census => {
-            if (timer > 6000 && ran.dice(16000 - timer)) {
+
+            if(bossesSpawned == 0){
+            //if (timer > 6000 && ran.dice(16000 - timer)) {
                 util.log('[SPAWN] Preparing to spawn...');
                 timer = 0;
+                bossesSpawned++;
                 let choice = [];
                 switch (ran.chooseChance(40, 1)) {
                     case 0:
@@ -5402,7 +5456,7 @@ var maintainloop = (() => {
         return () => {
             let census = {
                 crasher: 0,
-                miniboss: 0,
+                miniboss: 1,
                 tank: 0,
             };
             let npcs = entities.map(function npcCensus(instance) {
@@ -5416,7 +5470,7 @@ var maintainloop = (() => {
 
             // Spawning
             //spawnCrasher(census);
-            //spawnBosses(census);
+            spawnBosses(census);
 
 
             /*/ Bots

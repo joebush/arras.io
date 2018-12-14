@@ -366,7 +366,7 @@ input [type="image"]:focus{
     color: red;
 }
 
-.signup {
+.signup, .login {
     width: 300px;
     float: right;
     display: block;
