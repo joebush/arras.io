@@ -1282,6 +1282,10 @@ const socketInit = (() => {
                             console.log('The server has welcomed us to the game room. Sending spawn request.');
                             socket.talk('s', global.playerName, 1);
                             global.message = '';
+
+                            if(m[0] && m[1]){
+                                global.playerName = m[0];
+                            }
                         }
                     }
                     break;

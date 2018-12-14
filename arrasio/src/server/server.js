@@ -3352,7 +3352,7 @@ const sockets = (() => {
                         let playerEmail = authData[0];
                         let playerPassword = authData[1];
 
-                        db.query("SELECT id FROM players WHERE email = ? AND password = ?",[playerEmail, playerPassword], function(error, results){
+                        db.query("SELECT id, name, email FROM players WHERE email = ? AND password = ?",[playerEmail, playerPassword], function(error, results){
 
                             if(!results[0]){
                                 socket.verified = false;
@@ -3361,9 +3361,10 @@ const sockets = (() => {
                             }
 
                             socket.verified = true;
-                            socket.talk('w', true);
                             player._id = results[0]['id'];
                             player.name = results[0]['name'];
+
+                            socket.talk('w', player.name, true);
                         });
 
                         break;
@@ -3418,8 +3419,14 @@ const sockets = (() => {
                                 socket.kick('Ill-sized spawn request.');
                                 return 1;
                             }
+
                             // Get data
                             let name = m[0].replace(c.BANNED_CHARACTERS_REGEX, '');
+
+                            if(!name && player.name){
+                                name = player.name.replace(c.BANNED_CHARACTERS_REGEX, '');
+                            }
+
                             let needsRoom = m[1];
                             // Verify it
                             if (typeof name != 'string') {
@@ -5400,7 +5407,7 @@ var maintainloop = (() => {
         })();
         return census => {
 
-            if(bossesSpawned <= c.BOSSES){
+            if(bossesSpawned < c.BOSSES){
             //if (timer > 6000 && ran.dice(16000 - timer)) {
                 util.log('[SPAWN] Preparing to spawn...');
                 timer = 0;
